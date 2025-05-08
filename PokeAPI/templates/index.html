@@ -3,39 +3,108 @@
 <head>
     <meta charset="UTF-8">
     <title>PokeAPI Practice</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f5f8ff;
+            color: #333;
+            text-align: center;
+            padding: 20px;
+        }
+
+        form {
+            background-color: #fff;
+            padding: 20px;
+            margin: 0 auto 30px;
+            width: 400px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+
+        input[type="text"] {
+            width: 80%;
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
+
+        input[type="submit"] {
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        input[type="submit"]:hover {
+            background-color: #0056b3;
+        }
+
+        .result-container {
+            display: flex;
+            justify-content: center;
+            gap: 50px;
+            margin-top: 30px;
+        }
+
+        .pokemon-card {
+            background-color: #fff;
+            padding: 20px;
+            width: 250px;
+            border-radius: 10px;
+            box-shadow: 0 0 8px rgba(0,0,0,0.1);
+        }
+
+        .pokemon-card img {
+            width: 120px;
+            height: auto;
+        }
+
+        h3.advantage {
+            margin-top: 30px;
+            font-size: 1.2em;
+            color: #444;
+        }
+    </style>
 </head>
 <body>
-    <h1>Enter the name of two Pokemon to see who would have the type advantage</h1>
-    <br>
+    <h1>Compare Two Pokémon</h1>
+    <p>Enter the names below to see who has the type advantage.</p>
+
     <form action="/" method="POST">
-        <h3>Pokemon 1:</h3>
-        <input type="text" name="name1" id="name1">
-        <br>
-        <h3>Pokemon 2:</h3>
-        <input type="text" name="name2" id="name2">
-        <br>
-        <br>
+        <h3>Pokémon 1:</h3>
+        <input type="text" name="name1" id="name1" required>
+        <h3>Pokémon 2:</h3>
+        <input type="text" name="name2" id="name2" required>
+        <br><br>
         <input type="submit" value="Compare">
     </form>
 
     {% if result %}
-        <div>
-            <h2>{{ result.pokemon1.name | capitalize }}</h2>
-            <img src="{{ result.pokemon1.sprite_url }}">
-            <p>Types: {{ result.pokemon1.types | join(', ') }}</p>
+        <div class="result-container">
+            <div class="pokemon-card">
+                <h2>{{ result.pokemon1.name | capitalize }}</h2>
+                <img src="{{ result.pokemon1.sprite_url }}" alt="{{ result.pokemon1.name }}">
+                <p><strong>Types:</strong> {{ result.pokemon1.types | join(', ') }}</p>
+            </div>
 
-            <h2>{{ result.pokemon2.name | capitalize }}</h2>
-            <img src="{{ result.pokemon2.sprite_url }}">
-            <p>Types: {{ result.pokemon2.types | join(', ') }}</p>
+            <div class="pokemon-card">
+                <h2>{{ result.pokemon2.name | capitalize }}</h2>
+                <img src="{{ result.pokemon2.sprite_url }}" alt="{{ result.pokemon2.name }}">
+                <p><strong>Types:</strong> {{ result.pokemon2.types | join(', ') }}</p>
+            </div>
         </div>
+
         {% if result.pokemon2.advantage and result.pokemon1.advantage %}
-            <h3>Both Pokemon have a type advantage!</h3>
+            <h3 class="advantage">Both Pokémon have a type advantage!</h3>
         {% elif result.pokemon1.advantage %}
-            <h3>{{ result.pokemon1.name }} has the type advantage!</h3>
+            <h3 class="advantage">{{ result.pokemon1.name | capitalize }} has the type advantage!</h3>
         {% elif result.pokemon2.advantage %}
-            <h3>{{ result.pokemon2.name }} has the type advantage!</h3>
+            <h3 class="advantage">{{ result.pokemon2.name | capitalize }} has the type advantage!</h3>
         {% else %}
-            <h3>Neither Pokemon has the type advantage!</h3>
+            <h3 class="advantage">Neither Pokémon has a type advantage!</h3>
         {% endif %}
     {% endif %}
 
