@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>PokeAPI Practice</title>
+</head>
+<body>
+    <h1>Enter the name of two Pokemon to see who would have the type advantage</h1>
+    <br>
+    <form action="/" method="POST">
+        <h3>Pokemon 1:</h3>
+        <input type="text" name="name1" id="name1">
+        <br>
+        <h3>Pokemon 2:</h3>
+        <input type="text" name="name2" id="name2">
+        <br>
+        <br>
+        <input type="submit" value="Compare">
+    </form>
+
+    {% if result %}
+        <div>
+            <h2>{{ result.pokemon1.name | capitalize }}</h2>
+            <img src="{{ result.pokemon1.sprite_url }}">
+            <p>Types: {{ result.pokemon1.types | join(', ') }}</p>
+
+            <h2>{{ result.pokemon2.name | capitalize }}</h2>
+            <img src="{{ result.pokemon2.sprite_url }}">
+            <p>Types: {{ result.pokemon2.types | join(', ') }}</p>
+        </div>
+        {% if result.pokemon2.advantage and result.pokemon1.advantage %}
+            <h3>Both Pokemon have a type advantage!</h3>
+        {% elif result.pokemon1.advantage %}
+            <h3>{{ result.pokemon1.name }} has the type advantage!</h3>
+        {% elif result.pokemon2.advantage %}
+            <h3>{{ result.pokemon2.name }} has the type advantage!</h3>
+        {% else %}
+            <h3>Neither Pokemon has the type advantage!</h3>
+        {% endif %}
+    {% endif %}
+
+</body>
+</html>
